@@ -31,7 +31,7 @@ def drop_piece(board, col, h):
 
 def is_valid_move(board, col):
     #checks that a column is not already full
-    return board[n-1][col] == EMPTY_CELL;
+    return board[n-1][col] == EMPTY_CELL
 
 def find_empty_bottom_row(board, col):
     #finds the stopping place for a dropped piece
