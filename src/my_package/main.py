@@ -1,4 +1,5 @@
 import argparse
+from my_package.players.ai.minimax import get_best_move
 
 EMPTY_CELL = '0'
 HUMAN_PIECE = 'X'
@@ -120,12 +121,19 @@ def main():
     game_over = False
     while not game_over:
         current_player = "Player" if h == 0 else "Computer"
-        try:
-            # gets input from player
-            col = int(input(f"{current_player} Turn. Choose Column: "))
-        except ValueError:
-            print("Please enter a column in range.")
-            continue
+        
+        # Get move from player or AI
+        if h == 0:
+            # Human player
+            try:
+                col = int(input(f"{current_player} Turn. Choose Column (1-{len(board[0])}): ")) - 1
+            except ValueError:
+                print("Please enter a column in range.")
+                continue
+        else:
+            # AI player - use minimax
+            col = get_best_move(board, depth=4, m=m)
+            print(f"{current_player} chose column: {col + 1}")
 
         # places piece
         row, col = drop_piece(board, col, h)

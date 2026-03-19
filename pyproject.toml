@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-connectm"
+version = "0.1.0"
+description = "Connect M game with AI using minimax algorithm"
+authors = [{name = "Your Name"}]
+requires-python = ">=3.8"
+
+[tool.setuptools]
+packages = ["my_package"]
+
+[tool.setuptools.package-dir]
+"" = "src"
