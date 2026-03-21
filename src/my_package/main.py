@@ -61,11 +61,11 @@ def drop_piece(board, col, player):
     # places piece at last empty row after validating
     n = len(board[0])
     if not (0 <= col < n):
-        print(f"Invalid column {col}. Choose between 0 and {n-1}.")
+        print(f"Invalid column {col + 1}. Choose between 1 and {n}.")
         return None, None
 
     if not is_valid_move(board, col):
-        print(f"Column {col} is full. Choose another column.")
+        print(f"Column {col + 1} is full. Choose another column.")
         return None, None
 
     row = find_empty_bottom_row(board, col)
@@ -120,19 +120,30 @@ def main():
     # handles turns as long as the game isn't over
     game_over = False
     while not game_over:
+        # Check for tie before asking for move
+        if is_board_full(board):
+            print("Tie game!")
+            game_over = True
+            continue
+            
         current_player = "Player" if h == 0 else "Computer"
         
         # Get move from player or AI
         if h == 0:
             # Human player
             try:
-                col = int(input(f"{current_player} Turn. Choose Column (1-{len(board[0])}): ")) - 1
+                col_input = int(input(f"{current_player} Turn. Choose Column (1-{len(board[0])}): "))
+                col = col_input - 1
+                # Validate column is in range
+                if not (0 <= col < len(board[0])):
+                    print(f"Invalid column {col_input}. Choose between 1 and {len(board[0])}.")
+                    continue
             except ValueError:
-                print("Please enter a column in range.")
+                print("Please enter a valid number.")
                 continue
         else:
             # AI player - use minimax
-            col = get_best_move(board, depth=4, m=m)
+            col = get_best_move(board, depth=6, m=m)
             print(f"{current_player} chose column: {col + 1}")
 
         # places piece
@@ -145,12 +156,6 @@ def main():
         # checks for m in a row and ends the game if won
         if win_check(board, row, col, m):
             print(f"{current_player} wins!")
-            game_over = True
-            continue
-
-        # checks for a tied game and ends if board is full
-        if is_board_full(board):
-            print("Tie game!")
             game_over = True
             continue
 
